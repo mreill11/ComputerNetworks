@@ -28,7 +28,7 @@ int main(int argc, char **argv) {
     struct hostent *server;
     char *hostname;
     char buf[BUFSIZE];
-    //clock_t start, stop;
+    // Round trip time calculation vars
 	struct timeval start, end;
 	double rtt;
 
