@@ -11,7 +11,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
-#include <time.h>
+#include <sys/time.h>
 
 #define BUFSIZE 4096
 
@@ -28,7 +28,9 @@ int main(int argc, char **argv) {
     struct hostent *server;
     char *hostname;
     char buf[BUFSIZE];
-    clock_t start, stop;
+    //clock_t start, stop;
+	struct timeval start, end;
+	double rtt;
 
     /* check command line arguments */
     // CHANGE <text or file name>
@@ -63,24 +65,22 @@ int main(int argc, char **argv) {
     bzero(buf, BUFSIZE);
     //printf("Please enter msg: ");
     //fgets(buf, BUFSIZE, stdin);
-    buf = argv[3];
+    //buf = argv[3];
+	strcpy(buf, argv[3]);
 
     /* send the message to the server */
     serverlen = sizeof(serveraddr);
     n = sendto(sockfd, buf, strlen(buf), 0, &serveraddr, serverlen);
-    start = clock();
-    if (n < 0) 
+	gettimeofday(&start, NULL);
+	if (n < 0) 
       error("ERROR in sendto");
     
     /* print the server's reply */
     n = recvfrom(sockfd, buf, strlen(buf), 0, &serveraddr, &serverlen);
-    stop = clock();
-    if (n < 0) 
+	gettimeofday(&end, NULL);
+	if (n < 0) 
       error("ERROR in recvfrom");
     printf("Echo from server: %s\n", buf);
-
-    printf("%6.3f", start);
-    printf("\n\n%6.3f", stop);
-    
+ 	printf("RTT: %Lf\n",(long double)((end.tv_sec * (int)1e6 + end.tv_usec) - (start.tv_sec * (int)1e6 + start.tv_usec)));
     return 0;
 }
