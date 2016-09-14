@@ -15,6 +15,8 @@
 
 #define BUFSIZE 4096
 
+void readFile(char *dest, char *filename);
+
 // error - wrapper for perror
 void error(char *msg) {
     perror(msg);
@@ -67,6 +69,10 @@ int main(int argc, char **argv) {
     //fgets(buf, BUFSIZE, stdin);
     //buf = argv[3];
 	strcpy(buf, argv[3]);
+	if (access(buf, F_OK) != -1) {
+		// send file
+		readFile(buf, buf);
+	}
 
     /* send the message to the server */
     serverlen = sizeof(serveraddr);
@@ -80,7 +86,20 @@ int main(int argc, char **argv) {
 	gettimeofday(&end, NULL);
 	if (n < 0) 
       error("ERROR in recvfrom");
-    printf("Echo from server: %s\n", buf);
+    printf("Echo from server: %s\n", buf);	
  	printf("RTT: %Lf\n",(long double)((end.tv_sec * (int)1e6 + end.tv_usec) - (start.tv_sec * (int)1e6 + start.tv_usec)));
     return 0;
+}
+
+void readFile(char *dest, char *filename) {
+	FILE *fp = fopen(filename, "r");
+	if (fp != NULL) {
+		size_t new_len = fread(dest, sizeof(char), BUFSIZE, fp);
+		if (ferror(fp) != 0) { 
+			fputs("Error reading file", stderr);
+		} else {
+			dest[new_len++] = '\0';
+		}
+		fclose(fp);
+	}
 }
