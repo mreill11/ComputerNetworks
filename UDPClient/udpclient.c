@@ -30,10 +30,11 @@ int main(int argc, char **argv) {
     struct hostent *server;
     char *hostname;
     char buf[BUFSIZE];
-    //clock_t start, stop;
+    // Round trip time calculation vars
 	struct timeval start, end;
 	double rtt;
 
+    // Delete the following, for debugging only
     /* check command line arguments */
     // CHANGE <text or file name>
     if (argc != 4) {
@@ -46,11 +47,13 @@ int main(int argc, char **argv) {
 
     /* socket: create the socket */
     sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+    // Delete the following, for debugging only
     if (sockfd < 0) 
         error("ERROR opening socket");
 
     /* gethostbyname: get the server's DNS entry */
     server = gethostbyname(hostname);
+    // Delete the following, for debugging only
     if (server == NULL) {
         fprintf(stderr,"ERROR, no such host as %s\n", hostname);
         exit(0);
@@ -60,7 +63,7 @@ int main(int argc, char **argv) {
     bzero((char *) &serveraddr, sizeof(serveraddr));
     serveraddr.sin_family = AF_INET;
     bcopy((char *)server->h_addr, 
-	  (char *)&serveraddr.sin_addr.s_addr, server->h_length);
+	   (char *)&serveraddr.sin_addr.s_addr, server->h_length);
     serveraddr.sin_port = htons(portno);
 
     /* get a message from the user */
@@ -78,15 +81,24 @@ int main(int argc, char **argv) {
     serverlen = sizeof(serveraddr);
     n = sendto(sockfd, buf, strlen(buf), 0, &serveraddr, serverlen);
 	gettimeofday(&start, NULL);
+    // Delete the following, for debugging only
 	if (n < 0) 
-      error("ERROR in sendto");
+        error("ERROR in sendto");
     
     /* print the server's reply */
     n = recvfrom(sockfd, buf, strlen(buf), 0, &serveraddr, &serverlen);
 	gettimeofday(&end, NULL);
+    // Delete the following, for debugging only
 	if (n < 0) 
+<<<<<<< HEAD
       error("ERROR in recvfrom");
     printf("Echo from server: %s\n", buf);	
+=======
+        error("ERROR in recvfrom");
+
+    printf("Echo from server: %s\n", buf);
+
+>>>>>>> db1145fe80bed2cd15af2f85e2a4be35dfb44530
  	printf("RTT: %Lf\n",(long double)((end.tv_sec * (int)1e6 + end.tv_usec) - (start.tv_sec * (int)1e6 + start.tv_usec)));
     return 0;
 }
