@@ -31,6 +31,7 @@ int main(int argc, char **argv) {
 	struct timeval timestruct;
 	time_t curTime;
 	char time[30];
+	char timeBuf[60];
 	char buf[BUFSIZE]; // message buffer
 	char key[BUFSIZE]; // decryption key
 	char *hostaddrp; // dotted decimal host addr string
@@ -82,6 +83,17 @@ int main(int argc, char **argv) {
 		sprintf(ret_buf + strlen(ret_buf), timestruct);
 		//strftime(time,30,"%m-%d-%Y  %T.",localtime(&curTime));
 		//printf("%s%ld\n",time,timestruct.tv_usec);
+
+		//get time 
+        gettimeofday(&timestruct, NULL); 
+        curtime = timestruct.tv_sec; 
+        
+        //create Timestamp
+        strftime(timeBuf, 30, " Timestamp: %T.", localtime(&curtime)); 
+        sprintf(time, "%s%ld", timeBuf, timestruct.tv_usec);
+
+        strcat(buf, time);
+        buf[BUFSIZE - 1] = '\0';
 
 		if (n < 0)
 			error("ERROR in recvfrom");
