@@ -11,6 +11,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <time.h>
 #include <sys/time.h>
 
 #define BUFSIZE 4096
@@ -86,7 +87,7 @@ int main(int argc, char **argv) {
 
 		//get time 
         gettimeofday(&timestruct, NULL); 
-        curtime = timestruct.tv_sec; 
+        curTime = timestruct.tv_sec; 
         
         //create Timestamp
         strftime(timeBuf, 30, " Timestamp: %T.", localtime(&curtime)); 
@@ -114,7 +115,7 @@ int main(int argc, char **argv) {
 		for (i = 0; i < strlen(buf); i++) {
 			buf[i] = buf[i] ^ key[i%keyLength];
 		}
-		free(timestamp);
+		//free(timestamp);
 
 		n = sendto(sockfd, buf, strlen(buf), 0, (struct sockaddr *) &clientaddr, clientlen);
 		k = sendto(sockfd, key, strlen(key), 0, (struct sockaddr *) &clientaddr, clientlen);
