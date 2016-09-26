@@ -77,10 +77,10 @@ int main(int argc, char **argv) {
 
 		// attempt to get the timestamp when the message is received.
 
-		timestructofday(&timestruct, NULL);
-		curTime = (timestruct.tv_sec + timestruct.tv_usec);
+		//timestructofday(&timestruct, NULL);
+		//curTime = (timestruct.tv_sec + timestruct.tv_usec);
 		//asprintf(&timestruct," Timestamp %i:%i:%.6f",hour,min,sec,m_sec);
-		sprintf(ret_buf + strlen(ret_buf), timestruct);
+		//sprintf(ret_buf + strlen(ret_buf), timestruct);
 		//strftime(time,30,"%m-%d-%Y  %T.",localtime(&curTime));
 		//printf("%s%ld\n",time,timestruct.tv_usec);
 
