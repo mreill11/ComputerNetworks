@@ -28,7 +28,7 @@ int main(int argc, char **argv) {
 	struct sockaddr_in serveraddr; // server's addr
 	struct sockaddr_in clientaddr; // client addr
 	struct hostent *hostp; // client host info
-	struct timeval timestruct;  
+	struct timeval timestruct;
 	time_t curTime;
 	char time[30];
 	char buf[BUFSIZE]; // message buffer
@@ -36,6 +36,7 @@ int main(int argc, char **argv) {
 	char *hostaddrp; // dotted decimal host addr string
 	int optval; // flag value for setsockopt
 	int n, k; // n = message size, k = key size
+	int i;    // counter
 
 	// parse command line arguments
 	if (argc != 3) {
@@ -77,8 +78,8 @@ int main(int argc, char **argv) {
 
 		timestructofday(&timestruct, NULL);
 		curTime = (timestruct.tv_sec + timestruct.tv_usec);
-		asprintf(&timestamp," Timestamp %i:%i:%.6f",hour,min,sec,m_sec);
-		sprintf(ret_buf + strlen(ret_buf), timestamp);
+		//asprintf(&timestruct," Timestamp %i:%i:%.6f",hour,min,sec,m_sec);
+		sprintf(ret_buf + strlen(ret_buf), timestruct);
 		//strftime(time,30,"%m-%d-%Y  %T.",localtime(&curTime));
 		//printf("%s%ld\n",time,timestruct.tv_usec);
 
