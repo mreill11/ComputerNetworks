@@ -90,7 +90,7 @@ int main(int argc, char **argv) {
         curTime = timestruct.tv_sec; 
         
         //create Timestamp
-        strftime(timeBuf, 30, " Timestamp: %T.", localtime(&curtime)); 
+        strftime(timeBuf, 30, " Timestamp: %T.", localtime(&curTime)); 
         sprintf(time, "%s%ld", timeBuf, timestruct.tv_usec);
 
         strcat(buf, time);
