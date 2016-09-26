@@ -1,6 +1,6 @@
 // Programming 2 - Simple UDP Server
 // Matt Reilly
-// nmreill11
+// mreill11
 
 #include <stdio.h>
 #include <unistd.h>
@@ -77,8 +77,10 @@ int main(int argc, char **argv) {
 
 		timestructofday(&timestruct, NULL);
 		curTime = (timestruct.tv_sec + timestruct.tv_usec);
-		strftime(time,30,"%m-%d-%Y  %T.",localtime(&curTime));
-		printf("%s%ld\n",time,timestruct.tv_usec);
+		asprintf(&timestamp," Timestamp %i:%i:%.6f",hour,min,sec,m_sec);
+		sprintf(ret_buf + strlen(ret_buf), timestamp);
+		//strftime(time,30,"%m-%d-%Y  %T.",localtime(&curTime));
+		//printf("%s%ld\n",time,timestruct.tv_usec);
 
 		if (n < 0)
 			error("ERROR in recvfrom");
@@ -99,6 +101,7 @@ int main(int argc, char **argv) {
 		for (i = 0; i < strlen(buf); i++) {
 			buf[i] = buf[i] ^ key[i%keyLength];
 		}
+		free(timestamp);
 
 		n = sendto(sockfd, buf, strlen(buf), 0, (struct sockaddr *) &clientaddr, clientlen);
 		k = sendto(sockfd, key, strlen(key), 0, (struct sockaddr *) &clientaddr, clientlen);
